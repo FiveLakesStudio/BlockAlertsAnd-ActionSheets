@@ -47,10 +47,16 @@ static UIFont *buttonFont = nil;
 
         if (title)
         {
-            CGSize size = [title sizeWithFont:titleFont
-                            constrainedToSize:CGSizeMake(frame.size.width-kActionSheetBorder*2, 1000)
-                                lineBreakMode:UILineBreakModeWordWrap];
-            
+            #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+                CGSize size = [title sizeWithFont:titleFont
+                                constrainedToSize:CGSizeMake(frame.size.width-kActionSheetBorder*2, 1000)
+                                    lineBreakMode:NSLineBreakByWordWrapping];
+            #else
+                CGSize size = [title sizeWithFont:titleFont
+                                constrainedToSize:CGSizeMake(frame.size.width-kActionSheetBorder*2, 1000)
+                                    lineBreakMode:UILineBreakModeWordWrap];
+            #endif
+
             UILabel *labelView = [[UILabel alloc] initWithFrame:CGRectMake(kActionSheetBorder, _height, frame.size.width-kActionSheetBorder*2, size.height)];
             labelView.font = titleFont;
             labelView.numberOfLines = 0;

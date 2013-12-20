@@ -54,7 +54,12 @@
         [theTextField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
         [theTextField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         [theTextField setBorderStyle:UITextBorderStyleRoundedRect];
-        [theTextField setTextAlignment:UITextAlignmentCenter];
+        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+            [theTextField setTextAlignment:NSTextAlignmentCenter];
+        #else
+            [theTextField setTextAlignment:UITextAlignmentCenter];
+        #endif
+        
         [theTextField setClearButtonMode:UITextFieldViewModeAlways];
         
         if (defaultText)

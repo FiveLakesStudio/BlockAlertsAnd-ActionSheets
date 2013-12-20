@@ -87,9 +87,16 @@ static UIFont *buttonFont = nil;
         
         if (title)
         {
-            CGSize size = [title sizeWithFont:titleFont
-                            constrainedToSize:CGSizeMake(frame.size.width-kAlertViewBorder*2, 1000)
-                                lineBreakMode:UILineBreakModeWordWrap];
+            #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+                CGSize size = [title sizeWithFont:titleFont
+                                constrainedToSize:CGSizeMake(frame.size.width-kAlertViewBorder*2, 1000)
+                                    lineBreakMode:NSLineBreakByWordWrapping];
+
+            #else
+                CGSize size = [title sizeWithFont:titleFont
+                                constrainedToSize:CGSizeMake(frame.size.width-kAlertViewBorder*2, 1000)
+                                    lineBreakMode:UILineBreakModeWordWrap];
+            #endif
 
             UILabel *labelView = [[UILabel alloc] initWithFrame:CGRectMake(kAlertViewBorder, _height, frame.size.width-kAlertViewBorder*2, size.height)];
             labelView.font = titleFont;
@@ -109,9 +116,15 @@ static UIFont *buttonFont = nil;
         
         if (message)
         {
-            CGSize size = [message sizeWithFont:messageFont
-                              constrainedToSize:CGSizeMake(frame.size.width-kAlertViewBorder*2, 1000)
-                                  lineBreakMode:UILineBreakModeWordWrap];
+            #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+                CGSize size = [message sizeWithFont:messageFont
+                                  constrainedToSize:CGSizeMake(frame.size.width-kAlertViewBorder*2, 1000)
+                                      lineBreakMode:NSLineBreakByWordWrapping];
+            #else
+                CGSize size = [message sizeWithFont:messageFont
+                                  constrainedToSize:CGSizeMake(frame.size.width-kAlertViewBorder*2, 1000)
+                                      lineBreakMode:UILineBreakModeWordWrap];
+            #endif
             
             UILabel *labelView = [[UILabel alloc] initWithFrame:CGRectMake(kAlertViewBorder, _height, frame.size.width-kAlertViewBorder*2, size.height)];
             labelView.font = messageFont;
@@ -207,22 +220,39 @@ static UIFont *buttonFont = nil;
         {
             // In this case there's another button.
             // Let's check if they fit on the same line.
-            CGSize size = [title sizeWithFont:buttonFont 
-                                  minFontSize:10 
-                               actualFontSize:nil
-                                     forWidth:_view.bounds.size.width-kAlertViewBorder*2 
-                                lineBreakMode:UILineBreakModeClip];
+            #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+                CGSize size = [title sizeWithFont:buttonFont
+                                      minFontSize:10
+                                   actualFontSize:nil
+                                         forWidth:_view.bounds.size.width-kAlertViewBorder*2
+                                    lineBreakMode:NSLineBreakByClipping];
+            #else
+                CGSize size = [title sizeWithFont:buttonFont
+                                      minFontSize:10
+                                   actualFontSize:nil
+                                         forWidth:_view.bounds.size.width-kAlertViewBorder*2
+                                    lineBreakMode:UILineBreakModeClip];
+            #endif
             
             if (size.width < maxHalfWidth - kAlertViewBorder)
             {
                 // It might fit. Check the next Button
                 NSArray *block2 = [_blocks objectAtIndex:i+1];
                 NSString *title2 = [block2 objectAtIndex:1];
-                size = [title2 sizeWithFont:buttonFont 
-                                minFontSize:10 
-                             actualFontSize:nil
-                                   forWidth:_view.bounds.size.width-kAlertViewBorder*2 
-                              lineBreakMode:UILineBreakModeClip];
+                
+                #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+                    size = [title2 sizeWithFont:buttonFont
+                                    minFontSize:10
+                                 actualFontSize:nil
+                                       forWidth:_view.bounds.size.width-kAlertViewBorder*2
+                                  lineBreakMode:NSLineBreakByClipping];
+                #else
+                    size = [title2 sizeWithFont:buttonFont
+                                    minFontSize:10
+                                 actualFontSize:nil
+                                       forWidth:_view.bounds.size.width-kAlertViewBorder*2
+                                  lineBreakMode:UILineBreakModeClip];
+                #endif
                 
                 if (size.width < maxHalfWidth - kAlertViewBorder)
                 {
@@ -235,11 +265,19 @@ static UIFont *buttonFont = nil;
         else if (_blocks.count  == 1)
         {
             // In this case this is the ony button. We'll size according to the text
-            CGSize size = [title sizeWithFont:buttonFont 
-                                  minFontSize:10 
-                               actualFontSize:nil
-                                     forWidth:_view.bounds.size.width-kAlertViewBorder*2 
-                                lineBreakMode:UILineBreakModeClip];
+            #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+                CGSize size = [title sizeWithFont:buttonFont
+                                      minFontSize:10
+                                   actualFontSize:nil
+                                         forWidth:_view.bounds.size.width-kAlertViewBorder*2
+                                    lineBreakMode:NSLineBreakByClipping];
+            #else
+                CGSize size = [title sizeWithFont:buttonFont
+                                      minFontSize:10
+                                   actualFontSize:nil
+                                         forWidth:_view.bounds.size.width-kAlertViewBorder*2
+                                    lineBreakMode:UILineBreakModeClip];
+            #endif
 
             size.width = MAX(size.width, 80);
             if (size.width + 2 * kAlertViewBorder < width)
